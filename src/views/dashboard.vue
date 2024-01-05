@@ -31,7 +31,8 @@
 					<template #header>
 						<div class="clearfix">
 							<span>待办事项</span>
-							<el-button @click="dialogVisible = true" style="float: right; padding: 3px 0" text>添加</el-button>
+							<el-button @click="dialogVisible = true" style="float: right; padding: 3px 0"
+								text>添加</el-button>
 						</div>
 					</template>
 
@@ -81,11 +82,15 @@ const input = ref('')
 const handleClose = (done: () => void) => {
 	done()
 }
-const submit = function() {	
+const submit = function () {
 	dialogVisible.value = false
 	const text = document.getElementById('input')
-	console.log(text);
-	
+	if (text.value !== '') {
+		todoList.push({
+			title: text.value,
+			status: false
+		})
+	}
 }
 
 const name = localStorage.getItem('ms_username');
@@ -140,12 +145,7 @@ const todoList = reactive([
 		status: true
 	}
 ]);
-const onAddItem = () => {
-	todoList.push({
-		title: '今天要修复100个bug',
-		status: false
-	})
-}
+
 </script>
 
 <style scoped>
