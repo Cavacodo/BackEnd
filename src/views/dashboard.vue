@@ -1,12 +1,12 @@
 <template>
 	<div>
 
-		<el-dialog v-model="dialogVisible" title="Tips" width="30%" :before-close="handleClose">
-			<el-input v-model="input" placeholder="Please input" clearable />
+		<el-dialog v-model="dialogVisible" title="文本" width="30%" :before-close="handleClose">
+			<el-input id="input" v-model="input" placeholder="输入待办事项" clearable />
 			<template #footer>
 				<span class="dialog-footer">
 					<el-button @click="dialogVisible = false">取消</el-button>
-					<el-button type="primary" @click="dialogVisible = false">
+					<el-button type="primary" @click="submit">
 						保存
 					</el-button>
 				</span>
@@ -81,7 +81,12 @@ const input = ref('')
 const handleClose = (done: () => void) => {
 	done()
 }
-
+const submit = function() {	
+	dialogVisible.value = false
+	const text = document.getElementById('input')
+	console.log(text);
+	
+}
 
 const name = localStorage.getItem('ms_username');
 const role: string = name === 'admin' ? '超级管理员' : '普通用户';
