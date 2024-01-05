@@ -1,5 +1,19 @@
 <template>
 	<div>
+
+		<el-dialog v-model="dialogVisible" title="Tips" width="30%" :before-close="handleClose">
+			<el-input v-model="input" placeholder="Please input" clearable />
+			<template #footer>
+				<span class="dialog-footer">
+					<el-button @click="dialogVisible = false">取消</el-button>
+					<el-button type="primary" @click="dialogVisible = false">
+						保存
+					</el-button>
+				</span>
+			</template>
+		</el-dialog>
+
+
 		<el-row :gutter="20">
 			<el-col :span="8">
 				<el-card shadow="hover" class="mgb20" style="height: 524px">
@@ -17,7 +31,7 @@
 					<template #header>
 						<div class="clearfix">
 							<span>待办事项</span>
-							<el-button @click="onAddItem" style="float: right; padding: 3px 0" text>添加</el-button>
+							<el-button @click="dialogVisible = true" style="float: right; padding: 3px 0" text>添加</el-button>
 						</div>
 					</template>
 
@@ -59,6 +73,15 @@
 import Schart from 'vue-schart';
 import { reactive } from 'vue';
 import imgurl from '../assets/img/img.jpg';
+
+import { ref } from 'vue'
+
+const dialogVisible = ref(false)
+const input = ref('')
+const handleClose = (done: () => void) => {
+	done()
+}
+
 
 const name = localStorage.getItem('ms_username');
 const role: string = name === 'admin' ? '超级管理员' : '普通用户';
