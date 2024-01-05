@@ -17,7 +17,7 @@
 					<template #header>
 						<div class="clearfix">
 							<span>待办事项</span>
-							<el-button style="float: right; padding: 3px 0" text>添加</el-button>
+							<el-button @click="onAddItem" style="float: right; padding: 3px 0" text>添加</el-button>
 						</div>
 					</template>
 
@@ -29,12 +29,9 @@
 						</el-table-column>
 						<el-table-column>
 							<template #default="scope">
-								<div
-									class="todo-item"
-									:class="{
-										'todo-item-del': scope.row.status
-									}"
-								>
+								<div class="todo-item" :class="{
+									'todo-item-del': scope.row.status
+								}">
 									{{ scope.row.title }}
 								</div>
 							</template>
@@ -69,7 +66,7 @@ const role: string = name === 'admin' ? '超级管理员' : '普通用户';
 const options = {
 	type: 'bar',
 	title: {
-		text: '最近一周各品类销售图'
+		text: '网站数据量(Top3)'
 	},
 	xRorate: 25,
 	labels: ['周一', '周二', '周三', '周四', '周五'],
@@ -91,37 +88,17 @@ const options = {
 const options2 = {
 	type: 'line',
 	title: {
-		text: '最近几个月各品类销售趋势图'
+		text: '网站访问量'
 	},
 	labels: ['6月', '7月', '8月', '9月', '10月'],
 	datasets: [
 		{
-			label: '家电',
+			label: '每天访问次数',
 			data: [234, 278, 270, 190, 230]
-		},
-		{
-			label: '百货',
-			data: [164, 178, 150, 135, 160]
-		},
-		{
-			label: '食品',
-			data: [74, 118, 200, 235, 90]
 		}
 	]
 };
 const todoList = reactive([
-	{
-		title: '今天要修复100个bug',
-		status: false
-	},
-	{
-		title: '今天要修复100个bug',
-		status: false
-	},
-	{
-		title: '今天要写100行代码加几个bug吧',
-		status: false
-	},
 	{
 		title: '今天要修复100个bug',
 		status: false
@@ -135,6 +112,12 @@ const todoList = reactive([
 		status: true
 	}
 ]);
+const onAddItem = () => {
+	todoList.push({
+		title: '今天要修复100个bug',
+		status: false
+	})
+}
 </script>
 
 <style scoped>

@@ -3,10 +3,39 @@
 		<div class="container">
 			<div class="handle-box">
 				<el-select v-model="query.address" placeholder="地址" class="handle-select mr10">
-					<el-option key="1" label="广东省" value="广东省"></el-option>
-					<el-option key="2" label="湖南省" value="湖南省"></el-option>
+					<el-option key="1" label="河北省" value="广东省"></el-option>
+					<el-option key="2" label="山西省" value="湖南省"></el-option>
+					<el-option key="3" label="辽宁省" value="广东省"></el-option>
+					<el-option key="4" label="吉林省" value="湖南省"></el-option>
+					<el-option key="5" label="黑龙江" value="广东省"></el-option>
+					<el-option key="6" label="江苏省" value="湖南省"></el-option>
+					<el-option key="7" label="浙江省" value="广东省"></el-option>
+					<el-option key="8" label="安徽省" value="湖南省"></el-option>
+					<el-option key="9" label="福建省" value="广东省"></el-option>
+					<el-option key="10" label="江西省" value="湖南省"></el-option>
+					<el-option key="11" label="山东省" value="广东省"></el-option>
+					<el-option key="12" label="河南省" value="湖南省"></el-option>
+					<el-option key="13" label="湖北省" value="广东省"></el-option>
+					<el-option key="14" label="湖南省" value="湖南省"></el-option>
+					<el-option key="15" label="广东省" value="广东省"></el-option>
+					<el-option key="16" label="海南省" value="湖南省"></el-option>
+					<el-option key="17" label="四川省" value="湖南省"></el-option>
+					<el-option key="18" label="贵州省" value="湖南省"></el-option>
+					<el-option key="19" label="云南省" value="湖南省"></el-option>
+					<el-option key="20" label="陕西省" value="湖南省"></el-option>
+					<el-option key="21" label="甘肃省" value="湖南省"></el-option>
+					<el-option key="22" label="青海省" value="湖南省"></el-option>
+					<el-option key="23" label="内蒙古" value="湖南省"></el-option>
+					<el-option key="24" label="广西" value="湖南省"></el-option>
+					<el-option key="25" label="西藏" value="湖南省"></el-option>
+					<el-option key="26" label="宁夏" value="湖南省"></el-option>
+					<el-option key="27" label="新疆" value="湖南省"></el-option>
+					<el-option key="28" label="北京" value="湖南省"></el-option>
+					<el-option key="29" label="天津" value="湖南省"></el-option>
+					<el-option key="30" label="上海" value="湖南省"></el-option>
+					<el-option key="31" label="重庆" value="湖南省"></el-option>
 				</el-select>
-				<el-input v-model="query.name" placeholder="用户名" class="handle-input mr10"></el-input>
+				<el-input v-model="query.name" placeholder="输入具体校名" class="handle-input mr10"></el-input>
 				<el-button type="primary" :icon="Search" @click="handleSearch">搜索</el-button>
 				<el-button type="primary" :icon="Plus">新增</el-button>
 			</div>

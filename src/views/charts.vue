@@ -1,9 +1,9 @@
 <template>
 	<div class="container">
-		<div class="plugins-tips">
+		<!-- <div class="plugins-tips">
 			vue-schart：vue.js封装sChart.js的图表组件。 访问地址：
 			<a href="https://github.com/lin-xin/vue-schart" target="_blank">vue-schart</a>
-		</div>
+		</div> -->
 		<div class="schart-box">
 			<div class="content-title">柱状图</div>
 			<schart class="schart" canvasId="bar" :options="options1"></schart>
@@ -28,9 +28,6 @@ import Schart from 'vue-schart';
 
 const options1 = {
 	type: 'bar',
-	title: {
-		text: '最近一周各品类销售图'
-	},
 	bgColor: '#fbfbfb',
 	labels: ['周一', '周二', '周三', '周四', '周五'],
 	datasets: [
@@ -51,9 +48,9 @@ const options1 = {
 };
 const options2 = {
 	type: 'line',
-	title: {
-		text: '最近几个月各品类销售趋势图'
-	},
+	// title: {
+	// 	text: '最近几个月各品类销售趋势图'
+	// },
 	bgColor: '#fbfbfb',
 	labels: ['6月', '7月', '8月', '9月', '10月'],
 	datasets: [
@@ -73,9 +70,9 @@ const options2 = {
 };
 const options3 = {
 	type: 'pie',
-	title: {
-		text: '服装品类销售饼状图'
-	},
+	// title: {
+	// 	text: '服装品类销售饼状图'
+	// },
 	legend: {
 		position: 'left'
 	},
@@ -89,9 +86,9 @@ const options3 = {
 };
 const options4 = {
 	type: 'ring',
-	title: {
-		text: '环形三等分'
-	},
+	// title: {
+	// 	text: '环形三等分'
+	// },
 	showValue: false,
 	legend: {
 		position: 'bottom',
@@ -109,6 +106,7 @@ const options4 = {
 
 <style scoped>
 .schart-box {
+	padding-left: 200px;
 	display: inline-block;
 	margin: 20px;
 }
@@ -117,6 +115,7 @@ const options4 = {
 	height: 400px;
 }
 .content-title {
+	text-align: center;
 	clear: both;
 	font-weight: 400;
 	line-height: 50px;

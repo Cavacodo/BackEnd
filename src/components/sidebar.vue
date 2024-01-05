@@ -70,7 +70,7 @@ const items = [
         subs: [
             {
                 index: '/table',
-                title: '常用表格',
+                title: '数据修改',
                 permiss: '2',
             },
             {
@@ -135,7 +135,7 @@ const items = [
     {
         icon: 'PieChart',
         index: '/charts',
-        title: 'schart图表',
+        title: '统计数据',
         permiss: '11',
     },
     // {
