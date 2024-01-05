@@ -8,6 +8,7 @@ import 'element-plus/dist/index.css';
 import './assets/css/icon.css';
 import axios from 'axios'
 import vueAxios from 'vue-axios'
+import './mock/index.js'
 
 const app = createApp(App);
 app.use(createPinia());

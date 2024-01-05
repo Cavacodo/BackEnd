@@ -36,10 +36,10 @@ import { ref, reactive } from 'vue';
 import { useTagsStore } from '../store/tags';
 import { usePermissStore } from '../store/permiss';
 import { useRouter } from 'vue-router';
-import { ElMessage } from 'element-plus';
+import axios from 'axios';
 import type { FormInstance, FormRules } from 'element-plus';
 import { Lock, User } from '@element-plus/icons-vue';
-
+import { ElMessage } from 'element-plus';
 interface LoginInfo {
 	username: string;
 	password: string;
@@ -64,20 +64,33 @@ const rules: FormRules = {
 const permiss = usePermissStore();
 const login = ref<FormInstance>();
 const submitForm = (formEl: FormInstance | undefined) => {
-	if (!formEl) return;
-	formEl.validate((valid: boolean) => {
-		if (valid) {
-			ElMessage.success('登录成功');
-			localStorage.setItem('ms_username', param.username);
-			const keys = permiss.defaultList[param.username == 'admin' ? 'admin' : 'user'];
-			permiss.handleSet(keys);
-			localStorage.setItem('ms_keys', JSON.stringify(keys));
+	const account = param.username;
+	const passwd = param.password;
+	const res = {
+		account: account,
+		passwd: passwd
+	}
+	console.log(res);
+	let data = axios.post('/isValid',res).then(response =>{
+		const isTrue = response.data.isTrue;
+		if(isTrue){
+			// ElMessage.success('登录成功');
+			// localStorage.setItem('ms_username', param.username);
+			// const keys = permiss.defaultList[param.username == 'admin' ? 'admin' : 'user'];
+			// permiss.handleSet(keys);
+			// localStorage.setItem('ms_keys', JSON.stringify(keys));
 			router.push('/');
-		} else {
-			ElMessage.error('登录成功');
-			return false;
 		}
-	});
+	})
+	// if (!formEl) return;
+	// formEl.validate((valid: boolean) => {
+	// 	if (valid) {
+	
+	// 	} else {
+	// 		ElMessage.error('登录成功');
+	// 		return false;
+	// 	}
+	// });
 };
 
 const tags = useTagsStore();

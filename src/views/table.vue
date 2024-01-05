@@ -146,8 +146,16 @@ getData();
 
 // 查询操作
 const handleSearch = () => {
-	// console.log(query.address);
-	// console.log(query.name);
+	console.log(query.address);
+	console.log(query.name);
+	if(query.address == '' && query.name == '') alert('输入有效数据！！！'); 
+	else if(query.address == '' && query.name !== ''){
+		//掉地址查询接口
+	}else if(query.name == '' && query.address !== ''){
+		//学校名称查询接口
+	}else{
+		//地址+学校名称查询接口
+	}
 	query.pageIndex = 1;
 	getData();
 };
