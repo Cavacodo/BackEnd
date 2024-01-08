@@ -16,8 +16,8 @@
 									<i class="el-icon-lx-camerafill"></i>
 								</span>
 							</div>
-							<div class="info-name">{{ name }}</div>
-							<div class="info-desc">不可能！我的代码怎么可能会有bug！</div>
+							<div class="info-name">root</div>
+							<div class="info-desc" id="desc">不可能！我的代码怎么可能会有bug！</div>
 						</div>
 					</div>
 				</el-card>
@@ -31,7 +31,7 @@
 					</template>
 					<div style="padding-top: 120px;">
 						<el-form label-width="90px">
-							<el-form-item label="用户名："> {{ name }} </el-form-item>
+							<el-form-item label="用户名："> root </el-form-item>
 							<el-form-item label="旧密码：">
 								<el-input type="password" v-model="form.old"></el-input>
 							</el-form-item>
@@ -70,14 +70,25 @@ import { reactive, ref } from 'vue';
 import VueCropper from 'vue-cropperjs';
 import 'cropperjs/dist/cropper.css';
 import avatar from '../assets/img/img.jpg';
+import axios from 'axios';
 
 const name = localStorage.getItem('ms_username');
 const form = reactive({
 	old: '',
 	new: '',
-	desc: '请输入吧'
+	desc: ''
 });
-const onSubmit = () => { };
+const onSubmit = () => {
+	const a = document.getElementById('desc')
+	const b = {
+		desc: 'a'
+	}
+	axios.get('/getDesc',{data: b}).then((res)=>{
+		if(a){
+			a.textContent = res.data.desc
+		}
+	})
+};
 
 const avatarImg = ref(avatar);
 const imgSrc = ref('');

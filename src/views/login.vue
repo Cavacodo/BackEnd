@@ -38,7 +38,7 @@ import { usePermissStore } from '../store/permiss';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
 import type { FormInstance, FormRules } from 'element-plus';
-import { Lock, User } from '@element-plus/icons-vue';
+import { Lock, SetUp, User } from '@element-plus/icons-vue';
 import { ElMessage } from 'element-plus';
 interface LoginInfo {
 	username: string;
@@ -47,8 +47,8 @@ interface LoginInfo {
 
 const router = useRouter();
 const param = reactive<LoginInfo>({
-	username: 'admin',
-	password: '123123'
+	username: 'root',
+	password: 'root'
 });
 
 const rules: FormRules = {
@@ -71,17 +71,19 @@ const submitForm = (formEl: FormInstance | undefined) => {
 		passwd: passwd
 	}
 	console.log(res);
-	let data = axios.post('/isValid',res).then(response =>{
+	axios.post('/isValid',res).then(response =>{
 		const isTrue = response.data.isTrue;
 		if(isTrue){
-			// ElMessage.success('登录成功');
-			// localStorage.setItem('ms_username', param.username);
-			// const keys = permiss.defaultList[param.username == 'admin' ? 'admin' : 'user'];
-			// permiss.handleSet(keys);
-			// localStorage.setItem('ms_keys', JSON.stringify(keys));
-			router.push('/');
+			console.log(123)
+			console.log(router);
+			
+			router.push("user");
+
 		}
-	})
+	}).catch((e)=>{
+		console.log(9999);
+		
+	})  
 	// if (!formEl) return;
 	// formEl.validate((valid: boolean) => {
 	// 	if (valid) {
