@@ -36,7 +36,7 @@
 						</div>
 					</template>
 
-					<el-table :show-header="false" :data="todoList" style="width: 100%">
+					<el-table :show-header="false" :data="todoList.arr" style="width: 100%">
 						<el-table-column width="40">
 							<template #default="scope">
 								<el-checkbox v-model="scope.row.status"></el-checkbox>
@@ -72,10 +72,11 @@
 
 <script setup lang="ts" name="dashboard">
 import Schart from 'vue-schart';
-import { reactive } from 'vue';
+import { onMounted, reactive } from 'vue';
 import imgurl from '../assets/img/img.jpg';
 
 import { ref } from 'vue'
+import axios from 'axios';
 
 const dialogVisible = ref(false)
 const input = ref('')
@@ -83,6 +84,7 @@ const handleClose = (done: () => void) => {
 	done()
 }
 const submit = function () {
+	
 	dialogVisible.value = false
 	const text = document.getElementById('input')
 	if (text.value !== '') {
@@ -127,21 +129,18 @@ const options2 = {
 		}
 	]
 };
-const todoList = reactive([
-	{
-		title: '今天要修复100个bug',
-		status: false
-	},
-	{
-		title: '今天要修复100个bug',
-		status: true
-	},
-	{
-		title: '今天要写100行代码加几个bug吧',
-		status: true
-	}
-]);
-
+let todoList = reactive({
+	arr:[]
+});
+const getForm = () => {
+	axios.get('/getToDo').then((res)=>{
+		todoList.arr = res.data.list;
+	})
+}
+onMounted(() => {
+	getForm();
+})
+console.log(todoList);
 </script>
 
 <style scoped>

@@ -11,17 +11,17 @@
 				<!-- <el-button type="primary" :icon="Plus">新增</el-button> -->
 			</div>
 			<el-table :data="tableData" border class="table" ref="multipleTable" header-cell-class-name="table-header">
-				<el-table-column prop="id" label="ID" width="55" align="center"></el-table-column>
-				<el-table-column prop="name" label="大学名称" align="center"></el-table-column>
-				<el-table-column label="专业" align="center">
+				<el-table-column prop="rId" label="ID" width="55" align="center"></el-table-column>
+				<el-table-column prop="sName" label="大学名称" align="center"></el-table-column>
+				<el-table-column prop="sMajor" label="专业" align="center">
 				</el-table-column>
-				<el-table-column label="平均分" align="center">
+				<el-table-column prop="rAverage" label="平均分" align="center">
 				</el-table-column>
-				<el-table-column prop="address" label="排名" align="center"></el-table-column>
-				<el-table-column label="年份" align="center">
+				<el-table-column prop="rRank" label="排名" align="center"></el-table-column>
+				<el-table-column prop="rYear" label="年份" align="center">
 				</el-table-column>
 
-				<el-table-column prop="date" label="文/理科" align="center"></el-table-column>
+				<el-table-column prop="rSubject" label="文/理科" align="center"></el-table-column>
 				<el-table-column label="操作" width="220" align="center">
 					<template #default="scope">
 						<el-button text :icon="Edit" @click="handleEdit(scope.$index, scope.row)" v-permiss="15">
@@ -34,14 +34,8 @@
 				</el-table-column>
 			</el-table>
 			<div class="pagination">
-				<el-pagination
-					background
-					layout="total, prev, pager, next"
-					:current-page="query.pageIndex"
-					:page-size="7"
-					:total="pageTotal"
-					@current-change="handlePageChange"
-				></el-pagination>
+				<el-pagination background layout="total, prev, pager, next" :current-page=query.pageIndex
+					:page-size=query.pageSize :total=pageTotal @current-change="handlePageChange"></el-pagination>
 			</div>
 		</div>
 
@@ -82,10 +76,9 @@ import { ref, reactive } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { Delete, Edit, Search, Plus } from '@element-plus/icons-vue';
 import axios from 'axios';
-import { fetchData } from '../api/index';
 
 interface TableItem {
-	rId: number;
+	rId: string;
 	sName: string;
 	sMajor: string;
 	rAverage: string;
@@ -98,23 +91,18 @@ const query = reactive({
 	address: '',
 	name: '',
 	pageIndex: 1,
-	pageSize: 10
+	pageSize: 7
 });
 const tableData = ref<TableItem[]>([]);
 const pageTotal = ref(0);
 // 获取表格数据
 const getData = () => {
-	// fetchData().then(res => {
-	// 	tableData.value = res.data.list;
-	// 	pageTotal.value = res.data.pageTotal || 50;
-	// });
-
-	const pageIdx = {
-		idx : 1
-	}
-	axios.get('/getDetail',{data : pageIdx}).then((res) => {
-		tableData.value = res.data.list;
-		pageTotal.value = res.data.pageTotal || 50;
+	const params = new URLSearchParams();
+	params.append('id',query.pageIndex+'')
+	console.log(query.pageIndex);
+	axios.post('http://127.0.0.1:8088/recruit/getShow', params).then((res) => {
+		tableData.value = res.data.data;
+		pageTotal.value = res.data.code || 50;
 	})
 };
 getData();
@@ -123,12 +111,12 @@ getData();
 const handleSearch = () => {
 	console.log(query.address);
 	console.log(query.name);
-	if(query.address == '' && query.name == '') alert('输入有效数据！！！'); 
-	else if(query.address == '' && query.name !== ''){
+	if (query.address == '' && query.name == '') alert('输入有效数据！！！');
+	else if (query.address == '' && query.name !== '') {
 		//掉地址查询接口
-	}else if(query.name == '' && query.address !== ''){
+	} else if (query.name == '' && query.address !== '') {
 		//学校名称查询接口
-	}else{
+	} else {
 		//地址+学校名称查询接口
 	}
 	query.pageIndex = 1;
@@ -137,6 +125,7 @@ const handleSearch = () => {
 // 分页导航
 const handlePageChange = (val: number) => {
 	query.pageIndex = val;
+	console.log(query.pageIndex);
 	getData();
 };
 
@@ -150,12 +139,13 @@ const handleDelete = (index: number) => {
 			ElMessage.success('删除成功');
 			tableData.value.splice(index, 1);
 		})
-		.catch(() => {});
+		.catch(() => { });
 };
 
 // 表格编辑时弹窗和保存
 const editVisible = ref(false);
 let form = reactive({
+	rId: '',
 	sName: '',
 	sMajor: '',
 	rAverage: '',
@@ -199,16 +189,20 @@ const saveEdit = () => {
 .handle-input {
 	width: 300px;
 }
+
 .table {
 	width: 100%;
 	font-size: 14px;
 }
+
 .red {
 	color: #F56C6C;
 }
+
 .mr10 {
 	margin-right: 10px;
 }
+
 .table-td-thumb {
 	display: block;
 	margin: auto;

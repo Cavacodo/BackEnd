@@ -18,6 +18,7 @@ Mock.mock('/isValid', 'post', function (res) {
 Mock.mock('/updateDesc','post', function(data){
     let body = JSON.parse(data.body)
     if(body){
+        console.log(body.data.new);
         const tmp = body.data.desc;
         console.log(tmp);
         return{
@@ -25,82 +26,34 @@ Mock.mock('/updateDesc','post', function(data){
         }
     }
 })
+Mock.mock('/getToDo','get',{
+        list:[{
+            title: '今天要修复1000个bug',
+            status: false
+        },
+        {
+            title: '今天要修复100个bug',
+            status: true
+        },
+        {
+            title: '今天要写100行代码加几个bug吧',
+            status: true
+        }]
+})
 Mock.mock('/getDetail','get',function(data){
     console.log(data.body);
     return{
         "list": [{
-                "id": 1,
-                "name": "张三",
-                "money": 123,
-                "address": "广东省东莞市长安镇",
-                "state": "成功",
-                "date": "2019-11-1",
-                "thumb": "https://lin-xin.gitee.io/images/post/wms.png"
+            rId: '1',
+            sName: '生活方式',
+            sMajor: '发顺丰',
+            rAverage: '阿斯顿发',
+            rRank: '阿斯顿发',
+            rYear: '是啥',
+            rSubject: ' 阿斯顿发这种'
             },
-            {
-                "id": 2,
-                "name": "李四",
-                "money": 456,
-                "address": "广东省广州市白云区",
-                "state": "成功",
-                "date": "2019-10-11",
-                "thumb": "https://lin-xin.gitee.io/images/post/node3.png"
-            },
-            {
-                "id": 3,
-                "name": "王五",
-                "money": 789,
-                "address": "湖南省长沙市",
-                "state": "失败",
-                "date": "2019-11-11",
-                "thumb": "https://lin-xin.gitee.io/images/post/parcel.png"
-            },
-            {
-                "id": 4,
-                "name": "赵六",
-                "money": 1011,
-                "address": "福建省厦门市鼓浪屿",
-                "state": "成功",
-                "date": "2019-10-20",
-                "thumb": "https://lin-xin.gitee.io/images/post/notice.png"
-            },
-            {
-                "id": 5,
-                "name": "赵六",
-                "money": 1011,
-                "address": "福建省厦门市鼓浪屿",
-                "state": "成功",
-                "date": "2019-10-20",
-                "thumb": "https://lin-xin.gitee.io/images/post/notice.png"
-            },
-            {
-                "id": 6,
-                "name": "赵六",
-                "money": 1011,
-                "address": "福建省厦门市鼓浪屿",
-                "state": "成功",
-                "date": "2019-10-20",
-                "thumb": "https://lin-xin.gitee.io/images/post/notice.png"
-            },
-            {
-                "id": 7,
-                "name": "赵六",
-                "money": 1011,
-                "address": "福建省厦门市鼓浪屿",
-                "state": "成功",
-                "date": "2019-10-20",
-                "thumb": "https://lin-xin.gitee.io/images/post/notice.png"
-            },
-            {
-                "id": 8,
-                "name": "赵六",
-                "money": 1011,
-                "address": "福建省厦门市鼓浪屿",
-                "state": "成功",
-                "date": "2019-10-20",
-                "thumb": "https://lin-xin.gitee.io/images/post/notice.png"
-            }
+            
         ],
-        "pageTotal": 8
+        "pageTotal": 4
     }
 })

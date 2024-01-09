@@ -14,7 +14,7 @@
 								<el-avatar :size="100" :src="avatarImg" />
 							</div>
 							<div class="info-name">root</div>
-							<div class="info-desc" id="desc">请输入个人简介</div>
+							<div class="info-desc" id="desc">{{ form.desc }}</div>
 						</div>
 					</div>
 				</el-card>
@@ -50,7 +50,7 @@
 </template>
 
 <script setup lang="ts" name="user">
-import { reactive, ref } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import VueCropper from 'vue-cropperjs';
 import 'cropperjs/dist/cropper.css';
 import avatar from '../assets/img/img.jpg';
@@ -63,17 +63,29 @@ const form = reactive({
 	desc: ''
 });
 const onSubmit = () => {
-	const a = document.getElementById('desc')
-	const b = {
-		desc: form.desc
-	}
-	axios.post('/updateDesc',{data: b}).then((res)=>{
-		if(a){
-			a.textContent = res.data.desc
+	const params = new URLSearchParams();
+	params.append('oldpswd', form.old);
+	params.append('newpswd', form.new);
+	params.append('intro', form.desc);
+	axios.post('http://127.0.0.1:8088/user/changeUser', params).then((res) => {
+		const t = res.data.data;
+		if(t !== '111') alert(t);
+		if(form.desc && t === '111'){
+			 alert('个人简介修改成功！')
 		}
 	})
 };
-
+const getIntro = () => {
+	axios.get('http://127.0.0.1:8088/user/getIntro').then((res) => {
+		let con = res.data.data	
+		console.log(con);
+		
+		form.desc = con
+	})
+}
+onMounted(() => {
+	getIntro()
+})
 const avatarImg = ref(avatar);
 const imgSrc = ref('');
 const cropImg = ref('');
@@ -83,7 +95,7 @@ const cropper: any = ref();
 const showDialog = () => {
 	dialogVisible.value = true;
 	imgSrc.value = avatarImg.value;
-	
+
 };
 
 const setImage = (e: any) => {

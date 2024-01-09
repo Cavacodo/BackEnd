@@ -47,8 +47,8 @@ interface LoginInfo {
 
 const router = useRouter();
 const param = reactive<LoginInfo>({
-	username: 'root',
-	password: 'root'
+	username: '',
+	password: ''
 });
 
 const rules: FormRules = {
@@ -70,19 +70,19 @@ const submitForm = (formEl: FormInstance | undefined) => {
 		account: account,
 		passwd: passwd
 	}
-	console.log(res);
-	axios.post('/isValid',res).then(response =>{
-		const isTrue = response.data.isTrue;
-		if(isTrue){
-			console.log(123)
-			console.log(router);
-			
+	axios.get('http://127.0.0.1:8088/user/login?uid='+res.account+'&pswd='+res.passwd).then(response =>{
+		const isTrue = response.data.data;
+		console.log(isTrue);
+		if(isTrue === true){
+			console.log(123)			
 			router.push("user");
-
+		}else if(isTrue === false){
+			alert('密码错误')
+		}else{
+			alert('不存在的账户')
 		}
 	}).catch((e)=>{
 		console.log(9999);
-		
 	})  
 	// if (!formEl) return;
 	// formEl.validate((valid: boolean) => {
