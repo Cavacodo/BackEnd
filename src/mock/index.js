@@ -15,11 +15,14 @@ Mock.mock('/isValid', 'post', function (res) {
         isTrue: isTruem
     }
 })
-Mock.mock('/getDesc','get', function(data){
-    console.log(data.body);
-    let resp = '草似拟的🐎'
-    return{
-        desc: resp
+Mock.mock('/updateDesc','post', function(data){
+    let body = JSON.parse(data.body)
+    if(body){
+        const tmp = body.data.desc;
+        console.log(tmp);
+        return{
+            desc: tmp
+        }
     }
 })
 Mock.mock('/getDetail','get',function(data){
