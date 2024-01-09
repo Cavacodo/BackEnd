@@ -20,7 +20,7 @@
 					<div class="user-info">
 						<el-avatar :size="120" :src="imgurl" />
 						<div class="user-info-cont">
-							<div class="user-info-name">{{ name }}</div>
+							<div class="user-info-name">root</div>
 							<div>{{ role }}</div>
 						</div>
 					</div>
@@ -94,40 +94,36 @@ const submit = function () {
 }
 
 const name = localStorage.getItem('ms_username');
-const role: string = name === 'admin' ? '超级管理员' : '普通用户';
+const role: string = '超级管理员'
 
 const options = {
 	type: 'bar',
 	title: {
-		text: '网站数据量(Top3)'
+		text: '文理科分数(Top5)'
 	},
 	xRorate: 25,
-	labels: ['周一', '周二', '周三', '周四', '周五'],
+	labels: ['北京大学', '清华大学', '复旦大学', '人大（中科大）', '上海交通大学'],
 	datasets: [
 		{
-			label: '家电',
-			data: [234, 278, 270, 190, 230]
+			label: '文科',
+			data: [691, 688, 677, 676, 675]
 		},
 		{
-			label: '百货',
-			data: [164, 178, 190, 135, 160]
-		},
-		{
-			label: '食品',
-			data: [144, 198, 150, 235, 120]
+			label: '理科',
+			data: [712, 709, 696, 694, 699]
 		}
 	]
 };
 const options2 = {
 	type: 'line',
 	title: {
-		text: '网站访问量'
+		text: '学校访问量Top(5)'
 	},
-	labels: ['6月', '7月', '8月', '9月', '10月'],
+	labels: ['厦门大学', '四川大学', '武汉大学', '中山大学', '清华大学'],
 	datasets: [
 		{
-			label: '每天访问次数',
-			data: [234, 278, 270, 190, 230]
+			label: '每周访问次数',
+			data: [12663, 11535, 12582, 11439, 8161]
 		}
 	]
 };

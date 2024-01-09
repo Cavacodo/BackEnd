@@ -3,37 +3,8 @@
 		<div class="container">
 			<div class="handle-box">
 				<el-select v-model="query.address" placeholder="地址" class="handle-select mr10">
-					<el-option key="1" label="河北省" value="河北省"></el-option>
-					<el-option key="2" label="山西省" value="山西省"></el-option>
-					<el-option key="3" label="辽宁省" value="辽宁省"></el-option>
-					<el-option key="4" label="吉林省" value="吉林省"></el-option>
-					<el-option key="5" label="黑龙江" value="黑龙江"></el-option>
-					<el-option key="6" label="江苏省" value="江苏省"></el-option>
-					<el-option key="7" label="浙江省" value="浙江省"></el-option>
-					<el-option key="8" label="安徽省" value="安徽省"></el-option>
-					<el-option key="9" label="福建省" value="福建省"></el-option>
-					<el-option key="10" label="江西省" value="江西省"></el-option>
-					<el-option key="11" label="山东省" value="山东省"></el-option>
-					<el-option key="12" label="河南省" value="河南省"></el-option>
-					<el-option key="13" label="湖北省" value="湖北省"></el-option>
-					<el-option key="14" label="湖南省" value="湖南省"></el-option>
-					<el-option key="15" label="广东省" value="广东省"></el-option>
-					<el-option key="16" label="海南省" value="海南省"></el-option>
-					<el-option key="17" label="四川省" value="四川省"></el-option>
-					<el-option key="18" label="贵州省" value="贵州省"></el-option>
-					<el-option key="19" label="云南省" value="云南省"></el-option>
-					<el-option key="20" label="陕西省" value="陕西省"></el-option>
-					<el-option key="21" label="甘肃省" value="甘肃省"></el-option>
-					<el-option key="22" label="青海省" value="青海省"></el-option>
-					<el-option key="23" label="内蒙古" value="内蒙古"></el-option>
-					<el-option key="24" label="广西" value="广西"></el-option>
-					<el-option key="25" label="西藏" value="西藏"></el-option>
-					<el-option key="26" label="宁夏" value="宁夏"></el-option>
-					<el-option key="27" label="新疆" value="新疆"></el-option>
-					<el-option key="28" label="北京" value="北京"></el-option>
-					<el-option key="29" label="天津" value="天津"></el-option>
-					<el-option key="30" label="上海" value="上海"></el-option>
-					<el-option key="31" label="重庆" value="重庆"></el-option>
+					<el-option key="1" label="理科" value="理科"></el-option>
+					<el-option key="2" label="文科" value="文科"></el-option>
 				</el-select>
 				<el-input v-model="query.name" placeholder="输入具体校名" class="handle-input mr10"></el-input>
 				<el-button type="primary" :icon="Search" @click="handleSearch">搜索</el-button>
@@ -41,34 +12,16 @@
 			</div>
 			<el-table :data="tableData" border class="table" ref="multipleTable" header-cell-class-name="table-header">
 				<el-table-column prop="id" label="ID" width="55" align="center"></el-table-column>
-				<el-table-column prop="name" label="用户名"></el-table-column>
-				<el-table-column label="账户余额">
-					<template #default="scope">￥{{ scope.row.money }}</template>
+				<el-table-column prop="name" label="大学名称" align="center"></el-table-column>
+				<el-table-column label="专业" align="center">
 				</el-table-column>
-				<el-table-column label="头像(查看大图)" align="center">
-					<template #default="scope">
-						<el-image
-							class="table-td-thumb"
-							:src="scope.row.thumb"
-							:z-index="10"
-							:preview-src-list="[scope.row.thumb]"
-							preview-teleported
-						>
-						</el-image>
-					</template>
+				<el-table-column label="平均分" align="center">
 				</el-table-column>
-				<el-table-column prop="address" label="地址"></el-table-column>
-				<el-table-column label="状态" align="center">
-					<template #default="scope">
-						<el-tag
-							:type="scope.row.state === '成功' ? 'success' : scope.row.state === '失败' ? 'danger' : ''"
-						>
-							{{ scope.row.state }}
-						</el-tag>
-					</template>
+				<el-table-column prop="address" label="排名" align="center"></el-table-column>
+				<el-table-column label="年份" align="center">
 				</el-table-column>
 
-				<el-table-column prop="date" label="注册时间"></el-table-column>
+				<el-table-column prop="date" label="文/理科" align="center"></el-table-column>
 				<el-table-column label="操作" width="220" align="center">
 					<template #default="scope">
 						<el-button text :icon="Edit" @click="handleEdit(scope.$index, scope.row)" v-permiss="15">
@@ -95,11 +48,23 @@
 		<!-- 编辑弹出框 -->
 		<el-dialog title="编辑" v-model="editVisible" width="30%">
 			<el-form label-width="70px">
-				<el-form-item label="用户名">
-					<el-input v-model="form.name"></el-input>
+				<el-form-item label="大学名称">
+					<el-input v-model="form.sName"></el-input>
 				</el-form-item>
-				<el-form-item label="地址">
-					<el-input v-model="form.address"></el-input>
+				<el-form-item label="专业">
+					<el-input v-model="form.sMajor"></el-input>
+				</el-form-item>
+				<el-form-item label="平均分">
+					<el-input v-model="form.rAverage"></el-input>
+				</el-form-item>
+				<el-form-item label="排名">
+					<el-input v-model="form.rRank"></el-input>
+				</el-form-item>
+				<el-form-item label="年份">
+					<el-input v-model="form.rYear"></el-input>
+				</el-form-item>
+				<el-form-item label="文理科">
+					<el-input v-model="form.rSubject"></el-input>
 				</el-form-item>
 			</el-form>
 			<template #footer>
@@ -120,12 +85,13 @@ import axios from 'axios';
 import { fetchData } from '../api/index';
 
 interface TableItem {
-	id: number;
-	name: string;
-	money: string;
-	state: string;
-	date: string;
-	address: string;
+	rId: number;
+	sName: string;
+	sMajor: string;
+	rAverage: string;
+	rRank: string;
+	rSubject: string;
+	rYear: string;
 }
 
 const query = reactive({
@@ -190,21 +156,34 @@ const handleDelete = (index: number) => {
 // 表格编辑时弹窗和保存
 const editVisible = ref(false);
 let form = reactive({
-	name: '',
-	address: ''
+	sName: '',
+	sMajor: '',
+	rAverage: '',
+	rRank: '',
+	rYear: '',
+	rSubject: ''
 });
 let idx: number = -1;
 const handleEdit = (index: number, row: any) => {
 	idx = index;
-	form.name = row.name;
-	form.address = row.address;
+	form.sName = row.sName;
+	form.sMajor = row.sMajor;
+	form.rAverage = row.rAverage;
+	form.rRank = row.rRank;
+	form.rSubject = row.rSubject;
+	form.rYear = row.rYear;
 	editVisible.value = true;
 };
 const saveEdit = () => {
 	editVisible.value = false;
 	ElMessage.success(`修改第 ${idx + 1} 行成功`);
-	tableData.value[idx].name = form.name;
-	tableData.value[idx].address = form.address;
+	tableData.value[idx].sName = form.sName;
+	tableData.value[idx].sMajor = form.sMajor;
+	tableData.value[idx].rAverage = form.rAverage;
+	tableData.value[idx].rRank = form.rRank;
+	tableData.value[idx].rSubject = form.rSubject;
+	tableData.value[idx].rYear = form.rYear;
+
 };
 </script>
 

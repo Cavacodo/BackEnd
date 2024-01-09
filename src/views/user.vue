@@ -10,14 +10,11 @@
 					</template>
 					<div style="height: 540px;">
 						<div class="info" style="padding-top: 120px;">
-							<div class="info-image" @click="showDialog">
+							<div class="info-image">
 								<el-avatar :size="100" :src="avatarImg" />
-								<span class="info-edit">
-									<i class="el-icon-lx-camerafill"></i>
-								</span>
 							</div>
 							<div class="info-name">root</div>
-							<div class="info-desc" id="desc">不可能！我的代码怎么可能会有bug！</div>
+							<div class="info-desc" id="desc">请输入个人简介</div>
 						</div>
 					</div>
 				</el-card>
@@ -49,19 +46,6 @@
 				</el-card>
 			</el-col>
 		</el-row>
-		<el-dialog title="裁剪图片" v-model="dialogVisible" width="600px">
-			<vue-cropper ref="cropper" :src="imgSrc" :ready="cropImage" :zoom="cropImage" :cropmove="cropImage"
-				style="width: 100%; height: 400px"></vue-cropper>
-
-			<template #footer>
-				<span class="dialog-footer">
-					<el-button class="crop-demo-btn" type="primary">选择图片
-						<input class="crop-input" type="file" name="image" accept="image/*" @change="setImage" />
-					</el-button>
-					<el-button type="primary" @click="saveAvatar">上传并保存</el-button>
-				</span>
-			</template>
-		</el-dialog>
 	</div>
 </template>
 
@@ -81,9 +65,9 @@ const form = reactive({
 const onSubmit = () => {
 	const a = document.getElementById('desc')
 	const b = {
-		desc: 'a'
+		desc: form.desc
 	}
-	axios.get('/getDesc',{data: b}).then((res)=>{
+	axios.post('/updateDesc',{data: b}).then((res)=>{
 		if(a){
 			a.textContent = res.data.desc
 		}
@@ -99,6 +83,7 @@ const cropper: any = ref();
 const showDialog = () => {
 	dialogVisible.value = true;
 	imgSrc.value = avatarImg.value;
+	
 };
 
 const setImage = (e: any) => {

@@ -43,24 +43,24 @@ interface TableItem {
 const tableData = ref<TableItem[]>([]);
 // 获取表格数据
 const getData = () => {
-    tableData.value = [
-        {
-            id: 1,
-            name: '小明',
-            sno: 'S001',
-            class: '一班',
-            age: '10',
-            sex: '男',
-        },
-        {
-            id: 2,
-            name: '小红',
-            sno: 'S002',
-            class: '一班',
-            age: '9',
-            sex: '女',
-        },
-    ];
+    // tableData.value = [
+    //     {
+    //         id: 1,
+    //         name: '小明',
+    //         sno: 'S001',
+    //         class: '一班',
+    //         age: '10',
+    //         sex: '男',
+    //     },
+    //     {
+    //         id: 2,
+    //         name: '小红',
+    //         sno: 'S002',
+    //         class: '一班',
+    //         age: '9',
+    //         sex: '女',
+    //     },
+    // ];
 };
 getData();
 
