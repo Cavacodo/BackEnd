@@ -2,7 +2,7 @@
 	<div>
 		<div class="container">
 			<div class="handle-box">
-				<el-select v-model="query.address" placeholder="地址" class="handle-select mr10">
+				<el-select v-model="query.address" placeholder="类型" class="handle-select mr10">
 					<el-option key="1" label="理科" value="理科"></el-option>
 					<el-option key="2" label="文科" value="文科"></el-option>
 				</el-select>
@@ -98,7 +98,7 @@ const pageTotal = ref(0);
 // 获取表格数据
 const getData = () => {
 	const params = new URLSearchParams();
-	params.append('id',query.pageIndex+'')
+	params.append('id', query.pageIndex + '')
 	console.log(query.pageIndex);
 	axios.post('http://127.0.0.1:8088/recruit/getShow', params).then((res) => {
 		tableData.value = res.data.data;
@@ -111,16 +111,21 @@ getData();
 const handleSearch = () => {
 	console.log(query.address);
 	console.log(query.name);
+	const params = new URLSearchParams();
+	params.append('Type', query.address);
+	params.append('sName', query.name);
+	params.append('idx', query.pageIndex + '')
 	if (query.address == '' && query.name == '') alert('输入有效数据！！！');
-	else if (query.address == '' && query.name !== '') {
-		//掉地址查询接口
-	} else if (query.name == '' && query.address !== '') {
-		//学校名称查询接口
-	} else {
-		//地址+学校名称查询接口
+	else {
+		axios.post('http://127.0.0.1:8088/recruit/searchByTypeName', params).then((res) => {
+			if (res.data.data.a === null) alert('无相关数据！！！')
+			else {
+				tableData.value = res.data.data;
+				pageTotal.value = res.data.code || 50;
+			}
+
+		})
 	}
-	query.pageIndex = 1;
-	getData();
 };
 // 分页导航
 const handlePageChange = (val: number) => {

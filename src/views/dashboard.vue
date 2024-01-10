@@ -39,15 +39,16 @@
 					<el-table :show-header="false" :data="todoList.arr" style="width: 100%">
 						<el-table-column width="40">
 							<template #default="scope">
-								<el-checkbox v-model="scope.row.status"></el-checkbox>
+								<el-checkbox @click="changeState(scope.row.tdId, scope.row.tdState)"
+									v-model="scope.row.tdState"></el-checkbox>
 							</template>
 						</el-table-column>
 						<el-table-column>
 							<template #default="scope">
 								<div class="todo-item" :class="{
-									'todo-item-del': scope.row.status
+									'todo-item-del': scope.row.tdState
 								}">
-									{{ scope.row.title }}
+									{{ scope.row.td }}
 								</div>
 							</template>
 						</el-table-column>
@@ -77,6 +78,7 @@ import imgurl from '../assets/img/img.jpg';
 
 import { ref } from 'vue'
 import axios from 'axios';
+import { pa } from 'element-plus/es/locale';
 
 const dialogVisible = ref(false)
 const input = ref('')
@@ -84,15 +86,20 @@ const handleClose = (done: () => void) => {
 	done()
 }
 const submit = function () {
-	
+
 	dialogVisible.value = false
 	const text = document.getElementById('input')
-	if (text.value !== '') {
-		todoList.push({
-			title: text.value,
-			status: false
+	const params = new URLSearchParams();
+	if (text.value) {
+		params.append('tdinfo', text.value);
+		axios.post('http://127.0.0.1:8088/td/addTd', params).then((res) => {
+			getForm();
 		})
 	}
+	else{
+		alert('不能输入空！')
+	}
+
 }
 
 const name = localStorage.getItem('ms_username');
@@ -130,11 +137,32 @@ const options2 = {
 	]
 };
 let todoList = reactive({
-	arr:[]
+	arr: []
 });
+let datar = [{}];
 const getForm = () => {
-	axios.get('/getToDo').then((res)=>{
-		todoList.arr = res.data.list;
+	axios.get('http://127.0.0.1:8088/td/getTd').then((res) => {
+		todoList.arr = res.data.data;
+		datar = res.data.data;
+	})
+}
+const changeState = (tdId, tdState) => {
+	const a = tdId.charAt(2)
+	const params = new URLSearchParams();
+	params.append('tdId', tdId);
+	params.append('td', datar[a - 1].td);
+	console.log(tdState);
+	if (tdState === true) {
+		console.log(111);
+
+		tdState = false;
+	}
+	else if (tdState === false) {
+		tdState = true;
+	}
+	params.append('tdState', tdState);
+	axios.post('http://127.0.0.1:8088/td/changeState', params).then((res) => {
+		getForm()
 	})
 }
 onMounted(() => {
