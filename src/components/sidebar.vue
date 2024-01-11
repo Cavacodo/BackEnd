@@ -74,11 +74,6 @@ const items = [
                 permiss: '2',
             },
             {
-                index: '/import',
-                title: '导入Excel',
-                permiss: '2',
-            },
-            {
                 index: '/export',
                 title: '导出Excel',
                 permiss: '2',
