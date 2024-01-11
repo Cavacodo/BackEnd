@@ -27,7 +27,7 @@
 						<el-button text :icon="Edit" @click="handleEdit(scope.$index, scope.row)" v-permiss="15">
 							编辑
 						</el-button>
-						<el-button text :icon="Delete" class="red" @click="handleDelete(scope.$index)" v-permiss="16">
+						<el-button text :icon="Delete" class="red" @click="handleDelete(scope.row)" v-permiss="16">
 							删除
 						</el-button>
 					</template>
@@ -118,12 +118,11 @@ const handleSearch = () => {
 	if (query.address == '' && query.name == '') alert('输入有效数据！！！');
 	else {
 		axios.post('http://127.0.0.1:8088/recruit/searchByTypeName', params).then((res) => {
-			if (res.data.data.a === null) alert('无相关数据！！！')
+			if (res.data.data === '该学校不存在') alert('无相关数据！！！')
 			else {
 				tableData.value = res.data.data;
 				pageTotal.value = res.data.code || 50;
 			}
-
 		})
 	}
 };
@@ -131,21 +130,13 @@ const handleSearch = () => {
 const handlePageChange = (val: number) => {
 	query.pageIndex = val;
 	console.log(query.pageIndex);
-	getData();
+	if (query.address === '' && query.name === '') getData();
+	else {
+		handleSearch()
+	}
 };
 
-// 删除操作
-const handleDelete = (index: number) => {
-	// 二次确认删除
-	ElMessageBox.confirm('确定要删除吗？', '提示', {
-		type: 'warning'
-	})
-		.then(() => {
-			ElMessage.success('删除成功');
-			tableData.value.splice(index, 1);
-		})
-		.catch(() => { });
-};
+
 
 // 表格编辑时弹窗和保存
 const editVisible = ref(false);
@@ -161,6 +152,7 @@ let form = reactive({
 let idx: number = -1;
 const handleEdit = (index: number, row: any) => {
 	idx = index;
+	form.rId = row.rId;
 	form.sName = row.sName;
 	form.sMajor = row.sMajor;
 	form.rAverage = row.rAverage;
@@ -169,16 +161,52 @@ const handleEdit = (index: number, row: any) => {
 	form.rYear = row.rYear;
 	editVisible.value = true;
 };
+// 删除操作
+const handleDelete = (row: any) => {
+	form.rId = row.rId;
+	form.sName = row.sName;
+	form.sMajor = row.sMajor;
+	form.rAverage = row.rAverage;
+	form.rRank = row.rRank;
+	form.rSubject = row.rSubject;
+	form.rYear = row.rYear;
+	// 二次确认删除
+	ElMessageBox.confirm('确定要删除吗？', '提示', {
+		type: 'warning'
+	})
+		.then(() => {
+			const params = new URLSearchParams();
+			params.append('id', form.rId);
+			axios.post('http://127.0.0.1:8088/recruit/delShow', params).then((res) => {
+				if(res.data.data === true) alert('删除成功')
+				getData();
+			})
+		})
+		.catch(() => { });
+};
 const saveEdit = () => {
 	editVisible.value = false;
-	ElMessage.success(`修改第 ${idx + 1} 行成功`);
-	tableData.value[idx].sName = form.sName;
-	tableData.value[idx].sMajor = form.sMajor;
-	tableData.value[idx].rAverage = form.rAverage;
-	tableData.value[idx].rRank = form.rRank;
-	tableData.value[idx].rSubject = form.rSubject;
-	tableData.value[idx].rYear = form.rYear;
-
+	const params = new URLSearchParams();
+	params.append('rId', form.rId);
+	params.append('sName', form.sName);
+	params.append('sMajor', form.sMajor);
+	params.append('rAverage', form.rAverage);
+	params.append('rRank', form.rRank);
+	params.append('rSubject', form.rSubject);
+	params.append('rYear', form.rYear);
+	axios.post('http://127.0.0.1:8088/recruit/setShow', {
+		rId: form.rId,
+		sName: form.sName,
+		sMajor: form.sMajor,
+		rAverage: form.rAverage,
+		rRank: form.rRank,
+		rSubject: form.rSubject,
+		rYear: form.rYear
+	}).then((res) => {
+		if (res.data.data !== true) alert(res.data.data);
+	})
+	ElMessage.success(`修改第 ${form.rId + 1} 行成功`);
+	getData()
 };
 </script>
 

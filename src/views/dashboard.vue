@@ -78,7 +78,6 @@ import imgurl from '../assets/img/img.jpg';
 
 import { ref } from 'vue'
 import axios from 'axios';
-import { pa } from 'element-plus/es/locale';
 
 const dialogVisible = ref(false)
 const input = ref('')
@@ -105,37 +104,54 @@ const submit = function () {
 const name = localStorage.getItem('ms_username');
 const role: string = '超级管理员'
 
-const options = {
-	type: 'bar',
+const options = reactive({type: 'bar',
 	title: {
 		text: '文理科分数(Top5)'
 	},
-	xRorate: 25,
-	labels: ['北京大学', '清华大学', '复旦大学', '人大（中科大）', '上海交通大学'],
+	xRorate: 10,
+	labels: [''],
 	datasets: [
 		{
 			label: '文科',
-			data: [691, 688, 677, 676, 675]
+			data: [0, 0, 0, 0, 0]
 		},
 		{
 			label: '理科',
-			data: [712, 709, 696, 694, 699]
+			data: [0, 0, 0, 0, 0]
 		}
-	]
-};
-const options2 = {
+	]})
+const options2 = reactive({
 	type: 'line',
 	title: {
 		text: '学校访问量Top(5)'
 	},
-	labels: ['厦门大学', '四川大学', '武汉大学', '中山大学', '清华大学'],
+	labels: [''],
 	datasets: [
 		{
 			label: '每周访问次数',
-			data: [12663, 11535, 12582, 11439, 8161]
+			data: [0,0,0,0,0]
 		}
 	]
-};
+})
+const fillOption1 = () => {
+	axios.get('http://127.0.0.1:8088/recruit/getAllTop5').then((res) => {
+		options.labels = res.data.data[1];
+		options.datasets[0].data = res.data.data[0][0];
+		options.datasets[1].data = res.data.data[0][1];
+	})
+}
+const fileOption2 = () => {
+	axios.get('http://127.0.0.1:8088/popularity/getWeekTop5').then((res) => {
+		options2.labels = res.data.data[1];
+		options2.datasets[0].data = res.data.data[0];
+		// console.log(options2.labels);
+		// console.log(options2.datasets[0].data);
+		
+
+		// console.log(res.data.data[1]);
+		// console.log(res.data.data[0]);
+	})
+}
 let todoList = reactive({
 	arr: []
 });
@@ -168,7 +184,8 @@ const changeState = (tdId, tdState) => {
 onMounted(() => {
 	getForm();
 })
-console.log(todoList);
+fillOption1();
+fileOption2();
 </script>
 
 <style scoped>

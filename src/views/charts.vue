@@ -5,103 +5,100 @@
 			<a href="https://github.com/lin-xin/vue-schart" target="_blank">vue-schart</a>
 		</div> -->
 		<div class="schart-box">
-			<div class="content-title">柱状图</div>
+			<div class="content-title">近三年录取最高分数</div>
 			<schart class="schart" canvasId="bar" :options="options1"></schart>
 		</div>
 		<div class="schart-box">
-			<div class="content-title">折线图</div>
+			<div class="content-title">近三年录取分数情况</div>
 			<schart class="schart" canvasId="line" :options="options2"></schart>
 		</div>
 		<div class="schart-box">
-			<div class="content-title">饼状图</div>
+			<div class="content-title">前8省市大学数量</div>
 			<schart class="schart" canvasId="pie" :options="options3"></schart>
-		</div>
-		<div class="schart-box">
-			<div class="content-title">环形图</div>
-			<schart class="schart" canvasId="ring" :options="options4"></schart>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts" name="basecharts">
+import axios from 'axios';
+import { reactive } from 'vue';
 import Schart from 'vue-schart';
 
-const options1 = {
+const options1 = reactive({
 	type: 'bar',
 	bgColor: '#fbfbfb',
-	labels: ['周一', '周二', '周三', '周四', '周五'],
+	labels: ['2020','2021','2022'],
 	datasets: [
 		{
-			label: '家电',
+			label: '第一',
 			fillColor: 'rgba(241, 49, 74, 0.5)',
-			data: [234, 278, 270, 190, 230]
+			data: [0,0,0]
 		},
 		{
-			label: '百货',
-			data: [164, 178, 190, 135, 160]
+			label: '第二',
+			data: [0,0,0]
 		},
 		{
-			label: '食品',
-			data: [144, 198, 150, 235, 120]
+			label: '第三',
+			data: [0,0,0]
 		}
 	]
-};
-const options2 = {
+})
+const options2 = reactive({
 	type: 'line',
-	// title: {
-	// 	text: '最近几个月各品类销售趋势图'
-	// },
 	bgColor: '#fbfbfb',
-	labels: ['6月', '7月', '8月', '9月', '10月'],
+	labels: ['2020', '2021', '2022'],
 	datasets: [
 		{
-			label: '家电',
-			data: [234, 278, 270, 190, 230]
+			label: '平均分',
+			data: [0,0,0]
 		},
 		{
-			label: '百货',
-			data: [164, 178, 150, 135, 160]
+			label: '最高分',
+			data: [0,0,0]
 		},
 		{
-			label: '食品',
-			data: [114, 138, 200, 235, 190]
+			label: '最低分',
+			data: [0,0,0]
 		}
 	]
-};
-const options3 = {
+})
+const options3 = reactive({
 	type: 'pie',
-	// title: {
-	// 	text: '服装品类销售饼状图'
-	// },
 	legend: {
 		position: 'left'
 	},
 	bgColor: '#fbfbfb',
-	labels: ['T恤', '牛仔裤', '连衣裙', '毛衣', '七分裤', '短裙', '羽绒服'],
+	labels: [],
 	datasets: [
 		{
-			data: [334, 278, 190, 235, 260, 200, 141]
+			data: []
 		}
 	]
-};
-const options4 = {
-	type: 'ring',
-	// title: {
-	// 	text: '环形三等分'
-	// },
-	showValue: false,
-	legend: {
-		position: 'bottom',
-		bottom: 40
-	},
-	bgColor: '#fbfbfb',
-	labels: ['vue', 'react', 'angular'],
-	datasets: [
-		{
-			data: [500, 500, 500]
-		}
-	]
-};
+})
+const fileOption1 = () => {
+	axios.get('http://127.0.0.1:8088/recruit/get3YearTop3').then((res) => {
+		options1.datasets[0].data = res.data.data[0];
+		options1.datasets[1].data = res.data.data[1];
+		options1.datasets[2].data = res.data.data[2];
+	})
+}
+fileOption1();
+const fileOption2 = () => {
+	axios.get('http://127.0.0.1:8088/recruit/get3YearLine').then((res) => {
+		options2.datasets[0].data = res.data.data[1];
+		options2.datasets[1].data = res.data.data[0];
+		options2.datasets[2].data = res.data.data[2];
+	})
+}
+fileOption2();
+const fileOption3 = () => {
+	axios.get('http://127.0.0.1:8088/universityCount/getProvinceUnivCount').then((res) => {
+		options3.labels = res.data.data[0].slice(0,8);
+		options3.datasets[0].data = res.data.data[1].slice(0,8);
+	})
+}
+fileOption3();
 </script>
 
 <style scoped>
