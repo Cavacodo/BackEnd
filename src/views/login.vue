@@ -73,8 +73,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
 	axios.get('http://127.0.0.1:8088/user/login?uid='+res.account+'&pswd='+res.passwd).then(response =>{
 		const isTrue = response.data.data;
 		console.log(isTrue);
-		if(isTrue === true){
-			console.log(123)			
+		if(isTrue === true){			
 			router.push("user");
 		}else if(isTrue === false){
 			alert('密码错误')

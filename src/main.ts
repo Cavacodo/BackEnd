@@ -28,13 +28,13 @@ app.directive('permiss', {
     },
 });
 
-router.beforeEach((to,from,next)=>{
-    if(to.path == '/login'){
-        next();
-    }else{
-        alert('请你登陆！！！');
-        next('/login');
-    }
-})
+// router.beforeEach((to,from,next)=>{
+//     if(to.path == '/login' || ){
+//         next();
+//     }else{
+//         alert('请你登陆！！！');
+//         next('/login');
+//     }
+// })
 
 app.mount('#app');
