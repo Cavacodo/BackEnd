@@ -69,8 +69,9 @@ const onSubmit = () => {
 	params.append('intro', form.desc);
 	axios.post('http://127.0.0.1:8088/user/changeUser', params).then((res) => {
 		const t = res.data.data;
-		if(t !== '111') alert(t);
-		if(form.desc && t === '111'){
+		if(form.new === '') alert('不能为空！')
+		else if(t !== '111') alert(t);
+		else if(form.desc && t === '111'){
 			 alert('个人简介修改成功！')
 		}
 	})
